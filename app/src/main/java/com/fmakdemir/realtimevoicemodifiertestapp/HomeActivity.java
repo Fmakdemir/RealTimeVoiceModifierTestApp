@@ -8,7 +8,6 @@ import android.view.View;
 
 import com.fmakdemir.realtimevoicemodifier.RealTimeVoiceModifier;
 
-
 public class HomeActivity extends ActionBarActivity {
 
 	@Override
@@ -40,12 +39,33 @@ public class HomeActivity extends ActionBarActivity {
 	}
 
 	RealTimeVoiceModifier realTimeVoiceModifier;
+	int fsize = 1;
+	double[] filter = new double[fsize];
+
 	public void btnClicked(View v) {
-		if (v.getId() == R.id.btn_start) {
-			realTimeVoiceModifier = new RealTimeVoiceModifier();
-			realTimeVoiceModifier.start();
-		} else if (realTimeVoiceModifier != null) {
-			realTimeVoiceModifier.stop();
+		switch (v.getId()) {
+			case R.id.btn_start:
+				// reset filter
+				fsize = 1; // default size
+				filter = RealTimeVoiceModifier.DEFAULT_FILTER;
+				realTimeVoiceModifier = new RealTimeVoiceModifier();
+				realTimeVoiceModifier.start();
+			case R.id.btn_stop:
+				if (realTimeVoiceModifier != null) {
+					realTimeVoiceModifier.stop();
+				}
+			case R.id.btn_increase: // find next average filter with size of n^2
+				// get next square
+				fsize = (int)Math.sqrt(fsize)+1;
+				fsize *= fsize;
+				filter = new double[fsize];
+				// generate filter of square size
+				for (int i=0; i<fsize; ++i) {
+					filter[i] = 1.d/fsize;
+				}
+				if (realTimeVoiceModifier != null) {
+					realTimeVoiceModifier.setAudioFilter(filter);
+				}
 		}
 	}
 }

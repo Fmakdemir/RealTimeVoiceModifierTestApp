@@ -29,4 +29,11 @@
 		android:text="Stop record"
 		android:onClick="btnClicked"/>
 
+	<Button
+		android:id="@+id/btn_increase"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:text="Inc Filter Size"
+		android:onClick="btnClicked"/>
+
 </LinearLayout>
