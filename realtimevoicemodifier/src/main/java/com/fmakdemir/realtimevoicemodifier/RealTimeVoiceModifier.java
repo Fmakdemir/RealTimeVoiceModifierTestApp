@@ -39,7 +39,7 @@ public class RealTimeVoiceModifier {
 	}
 
 	public void start() {
-		Log.d(TAG, "Starting");
+		Log.d(TAG, "Starting: "+(recordThread == null));
 		if (recordThread == null) {
 			recordThread = new Thread(new Runnable() {
 
@@ -53,8 +53,8 @@ public class RealTimeVoiceModifier {
 			});
 
 			recordThread.start();
+			Log.d(TAG, "Started");
 		}
-		Log.d(TAG, "Started");
 	}
 
 	private void startRecord() {
@@ -84,7 +84,7 @@ public class RealTimeVoiceModifier {
 		// Start playing
 		audioTrack.play();
 
-		Log.d(TAG, "Not it should start playing");
+		Log.d(TAG, "Now it should start playing");
 		double val;
 		int i, j;
 		while(recording){

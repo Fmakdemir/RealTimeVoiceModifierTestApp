@@ -14,6 +14,7 @@ public class HomeActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_home);
+		realTimeVoiceModifier = new RealTimeVoiceModifier();
 	}
 
 	@Override
@@ -48,12 +49,12 @@ public class HomeActivity extends ActionBarActivity {
 				// reset filter
 				fsize = 1; // default size
 				filter = RealTimeVoiceModifier.DEFAULT_FILTER;
-				realTimeVoiceModifier = new RealTimeVoiceModifier();
+				realTimeVoiceModifier.setAudioFilter(filter);
 				realTimeVoiceModifier.start();
+				break;
 			case R.id.btn_stop:
-				if (realTimeVoiceModifier != null) {
-					realTimeVoiceModifier.stop();
-				}
+				realTimeVoiceModifier.stop();
+				break;
 			case R.id.btn_increase: // find next average filter with size of n^2
 				// get next square
 				fsize = (int)Math.sqrt(fsize)+1;
@@ -66,6 +67,7 @@ public class HomeActivity extends ActionBarActivity {
 				if (realTimeVoiceModifier != null) {
 					realTimeVoiceModifier.setAudioFilter(filter);
 				}
+				break;
 		}
 	}
 }
