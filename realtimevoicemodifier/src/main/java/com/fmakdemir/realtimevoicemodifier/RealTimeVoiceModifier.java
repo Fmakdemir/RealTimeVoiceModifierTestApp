@@ -7,6 +7,7 @@ import android.media.AudioTrack;
 import android.media.MediaRecorder;
 import android.media.MediaRecorder.AudioSource;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -47,23 +48,27 @@ public class RealTimeVoiceModifier {
 		mRecorder.setPositionNotificationPeriod(NOTIFICATION_PERIOD);
 
 		filter = DEFAULT_FILTER;
-		Thread recordThread = new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				recording = true;
-				startRecord();
-			}
-
-		});
-
-		recordThread.start();
+		Log.d(TAG, "Init complete");
 /*		listener = new AudioRecordListener(DEFAULT_FILTER);
 		mRecorder.setRecordPositionUpdateListener(listener);*/
 	}
 
 	public void start() {
 //		mRecorder.startRecording();
+		Log.d(TAG, "Starting");
+		recordThread = new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				recording = true;
+				Log.d(TAG, "Recording");
+				startRecord();
+			}
+
+		});
+
+		recordThread.start();
+		Log.d(TAG, "Started");
 	}
 
 	private void startRecord() {
@@ -93,13 +98,17 @@ public class RealTimeVoiceModifier {
 
 			audioRecord.startRecording();
 
+			Log.d(TAG, "Come til now");
 			while(recording){
 				int numberOfShort = audioRecord.read(audioData, 0, minBufferSize);
+//				Log.d(TAG, "Read: "+numberOfShort);
 				for(int i = 0; i < numberOfShort; i++){
 					dataOutputStream.writeShort(audioData[i]);
 				}
 			}
 
+			Log.d(TAG, "Stopping");
+			playRecord();
 			audioRecord.stop();
 			dataOutputStream.close();
 
